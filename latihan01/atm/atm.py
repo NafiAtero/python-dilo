@@ -48,10 +48,10 @@ class ATM:
         lagi = input("Apakah anda ingin melakukan transaksi lagi? [y/n] ")
         if lagi == "y":
             self.pilihJenisTransaksi()
-
-        cetak = input("Apakah anda ingin mencetak resi? [y/n] ")
-        if cetak == "y":
-            self.cetakResi()
+        else:
+            cetak = input("Apakah anda ingin mencetak resi? [y/n] ")
+            if cetak == "y":
+                self.cetakResi()
 
 saldo = 1000000
 atm = ATM(saldo)
