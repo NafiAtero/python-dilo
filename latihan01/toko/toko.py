@@ -22,91 +22,103 @@ class Toko:
     }
     ]
 
-    #item = ["Tissue","Lilin","Sabun","Gula"]
-    #harga = [2000,1000,3000,10000]
-    #satuan = ["box","batang","batang","kg"]
-
     def __init__(self):
         self.barangDipilih = []
         self.uang = None
 
     def pilihanBarang(self):
+        self.n = 1
+        for x in self.items:
+            nama = x.get("nama")
+            harga = x.get("harga")
+            satuan = x.get("satuan")
+            
+            print(f"[{self.n}] {nama} (Rp.{harga} per {satuan})")
+            self.n += 1
+        
+    def validasiPilihan(self):
+        self.pilihanBarang()
+        print(f"[{self.n}] Selesai")
+        pilihan = int(input("Pilih barang yang anda inginkan: ")) - 1
+        
 
-        print(f"[1] {self.items[0]}")
-        #print(f"[2] {self.item[1]} (Rp.{str(self.harga[1])} per {self.satuan[1]})")
-        #print(f"[3] {self.item[2]} (Rp.{str(self.harga[2])} per {self.satuan[2]})")
-        #print(f"[4] {self.item[3]} (Rp.{str(self.harga[3])} per {self.satuan[3]})")
-        print("[11] Selesai")
 
-    def getItem(self,pilihan):
-        self.barangDipilih.append(self.item[pilihan])
+        if pilihan < self.n - 1:
+            banyak = int(input(f"Pilih banyaknya: "))
+
+            self.getItem(pilihan,banyak)
+            print("")
+            print(f"Total anda sekarang: Rp.{self.getHargaTotal()}")
+            print("")
+            self.validasiPilihan()
+
+        elif pilihan == self.n - 1:
+            print(f"Total anda: Rp.{self.getHargaTotal()}")
+
+        else:
+            print(f"Masukan angka 1-{self.n}")
+            self.validasiPilihan()
 
 
-    def getHargaTotal(self,barang,banyak):
-        self.total = self.total + (self.harga[barang] * banyak)
+    def getItem(self,pilihan,banyak):
+        dictDipilih = self.items[pilihan]
+        dictDipilih["banyak"] = banyak
+        self.barangDipilih.append(dictDipilih)
+        
+    def getHargaTotal(self):
+        self.total = 0
+        for x in self.barangDipilih:
+            harga = x.get("harga")
+            banyak = x.get("banyak")
+            self.total += harga * banyak
         return self.total
 
     def getKembalian(self,uang):
         return uang - self.total
 
 
-
-
-
-def pilihBarang():
-    toko.pilihanBarang()
-    pilihan = int(input("Pilih barang yang anda inginkan: ")) - 1
-    #print(hargaTotal)
-
-    if 0 <= pilihan <= 9:
-
-        barang = toko.items[pilihan]
-        hargaBarang = toko.harga[pilihan]
-        satuanBarang = toko.satuan[pilihan]
-
-        banyakBarang = int(input(f"Pilih banyaknya (Rp.{hargaBarang} per {satuanBarang}): "))
-        #func
-        testList1.append(barang)
-        testList2.append(banyakBarang)
-        total = toko.getHargaTotal(pilihan,banyakBarang)
-
-        print("")
-        print(f"Total anda sekarang Rp.{total}")
-
-        print("")
-        pilihBarang()
-    
-    elif pilihan == 10:
-        print("")
-        print(f"Total anda Rp.{total}")
-        return None
-
-    else:
-        print("Masukan angka 1-11")
-
-    
-
-testList1 = []
-testList2 = []
 toko = Toko()
-
 
 
 print("")
 print("Selamat datang di toko!")
 print("")
-pilihBarang()
-uang = int(input("Masukan jumlah uang yang anda punya: Rp."))
+
+toko.pilihanBarang()
+
 print("")
 
-"""
-print(testList1)
-print(testList2)
-print(toko.total)"""
+pilihan = int(input("Pilih barang yang anda inginkan: ")) - 1
+
+if pilihan < toko.n - 1:
+    banyak = int(input(f"Pilih banyaknya: "))
+
+    toko.getItem(pilihan,banyak)
+
+    print("")
+    print(f"Total anda sekarang: Rp.{toko.getHargaTotal()}")
+    print("")
+
+else:
+    print(f"Masukan angka 1-{toko.n}")
+
+toko.validasiPilihan()
+
+print("")
+
+uang = int(input("Masukan jumlah uang yang anda punya: Rp."))
+
+print("")
 
 kembalian = toko.getKembalian(uang)
 
 if kembalian < 0:
     print("Uang anda kurang")
+elif kembalian == 0:
+    print("Uang anda pas")
 else:
     print(f"Kembalian anda Rp.{kembalian}")
+
+print("")
+
+print("Terima Kasih!")
